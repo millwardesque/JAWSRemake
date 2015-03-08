@@ -5,31 +5,61 @@ using System.Collections;
 [RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (BoxCollider2D))]
 public class Player : MonoBehaviour {
-	Animator animator;
-	bool facingRight = true;
-	public float xSpeed = 1f;
-	public float ySpeed = 1f;
+	[HideInInspector]
+	public Animator animator;
+
+	public float xSpeed = 5f;
+	public float ySpeed = 4f;
+
+	int health = 1;
+	PlayerState currentState;
 
 	// Use this for initialization
 	void Awake() {
 		animator = GetComponent<Animator> ();
 	}
-	
+
+	void Start() {
+		Initialize();
+	}
+
+	void Initialize() {
+		currentState = new PlayerSwimming();
+	}
+
+	public void SetState(PlayerState newState) {
+		if (newState != null) {
+			currentState = newState;
+			currentState.OnEnter(this);
+		}
+		else {
+			Debug.LogError ("Unable to set player state: New state is null.");
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
-		float xDir = Input.GetAxis ("Horizontal");
-		float yDir = Input.GetAxis ("Vertical");
-		float deadzone = 0.0001f;
-
-		if (xDir > deadzone && facingRight != true) {
-			animator.SetTrigger ("Swim Right");
-			facingRight = true;
-		} else if (xDir < -deadzone && facingRight == true) {
-			animator.SetTrigger("Swim Left");
-			facingRight = false;
+		if (currentState != null) {
+			currentState.OnUpdate(this);
 		}
+	}
 
-		Vector3 movement = new Vector3 (xDir * xSpeed, yDir * ySpeed);
-		transform.position += movement * Time.deltaTime;
+	void OnTriggerEnter2D(Collider2D collider) {
+		Debug.Log ("Collided with " + collider.gameObject.name);
+		if (collider.gameObject.tag == "Enemy" && currentState != null) {
+			currentState.OnEnemyCollision(this, collider);
+		}
+	}
+
+	public void AddDamage(int damage) {
+		health -= damage;
+
+		if (!IsAlive ()) {
+			SetState(new PlayerHit());
+		}
+	}
+
+	public bool IsAlive() {
+		return health > 0;
 	}
 }

@@ -5,11 +5,12 @@ using System.Collections;
 [RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (BoxCollider2D))]
 public class Jaws : MonoBehaviour {
-	public GameObject target;
+	public Player target;
+
 	Animator animator;
-	public float xSpeed = 1.0f;
-	public float ySpeed = 1.0f;
-	public bool facingRight = true;
+	public float xSpeed = 4.0f;
+	public float ySpeed = 3.0f;
+	bool facingRight = true;
 
 	// Use this for initialization
 	void Awake() {
@@ -22,17 +23,19 @@ public class Jaws : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 direction = (target.transform.position - transform.position);
+		if (target.IsAlive()) {
+			float xDir = 0f;
+			float yDir = (target.transform.position.y - transform.position.y) > float.Epsilon ? 1f : -1f;
 
-		if (direction.x > float.Epsilon && facingRight != true) {
-			animator.SetTrigger ("Swim Right");
-			facingRight = true;
-		} else if (direction.x < -float.Epsilon && facingRight == true) {
-			animator.SetTrigger("Swim Left");
-			facingRight = false;
+			if (facingRight != true) {
+				xDir = -1f;
+
+			} else {
+				xDir = 1f;
+			}
+			
+			Vector3 movement = new Vector3 (xDir * xSpeed, yDir * ySpeed);
+			transform.position += movement * Time.deltaTime;
 		}
-		
-		Vector3 movement = new Vector3 (direction.x * xSpeed, direction.y * ySpeed);
-		transform.position += movement * Time.deltaTime;
 	}
 }
