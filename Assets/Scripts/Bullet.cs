@@ -8,10 +8,14 @@ public class Bullet : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.position += new Vector3(speed * Time.deltaTime, 0);
+
+		if (!GameManager.Instance.IsInBounds(transform.position)) {
+			Destroy (gameObject);
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		if (col.tag == "Enemy" || col.tag == "Reversal") { // @TODO Rename the Reversal tag to something more appropriate now that we're using it for bullet destruction as well as Jaws' direction reversal
+		if (col.tag == "Enemy") {
 			Destroy(gameObject);
 		}
 	}

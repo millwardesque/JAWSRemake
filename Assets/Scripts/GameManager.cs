@@ -55,7 +55,19 @@ public class GameManager : MonoBehaviour {
 		pos.position = newPosition;
 	}
 
+	public bool IsInBounds(Vector3 point) {
+		return bounds.Contains(point);
+	}
+
 	public void JawsHealthUpdated(Jaws jaws) {
 		GUIManager.Instance.UpdateJawsHealth(jaws.health);
+
+		if (!jaws.IsAlive()) {
+			PlayerWins();
+		}
+	}
+
+	public void PlayerWins() {
+		Application.LoadLevel ("Ending");
 	}
 }

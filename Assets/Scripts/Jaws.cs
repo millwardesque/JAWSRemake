@@ -41,7 +41,8 @@ public class Jaws : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		if (col.tag == "Reversal") {
+		// Change direction if the shark hits the out-of-bounds triggers.
+		if (col.tag == "Out-of-bounds") {
 			if (facingRight) {
 				facingRight = false;
 				xDir = -1f;
@@ -62,5 +63,9 @@ public class Jaws : MonoBehaviour {
 	public void AddDamage(int damage) {
 		health -= damage;
 		GameManager.Instance.JawsHealthUpdated(this);
+	}
+
+	public bool IsAlive() {
+		return health > 0;
 	}
 }
