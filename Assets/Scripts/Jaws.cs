@@ -10,6 +10,8 @@ public class Jaws : MonoBehaviour {
 	Animator animator;
 	public float xSpeed = 4.0f;
 	public float ySpeed = 3.0f;
+	public int health = 60;
+
 	float xDir = 1.0f;
 	bool facingRight = true;
 
@@ -20,6 +22,10 @@ public class Jaws : MonoBehaviour {
 		if (target == null) {
 			Debug.LogError("Unable to start Jaws: Target isn't set.");
 		}
+	}
+
+	void Start() {
+		GameManager.Instance.JawsHealthUpdated(this);
 	}
 	
 	// Update is called once per frame
@@ -47,5 +53,14 @@ public class Jaws : MonoBehaviour {
 				animator.SetTrigger("Swim Right");
 			}
 		}
+
+		if (col.tag == "Bullet") {
+			AddDamage(col.GetComponent<Bullet>().damage);
+		}
+	}
+
+	public void AddDamage(int damage) {
+		health -= damage;
+		GameManager.Instance.JawsHealthUpdated(this);
 	}
 }

@@ -54,4 +54,8 @@ public class GameManager : MonoBehaviour {
 
 		pos.position = newPosition;
 	}
+
+	public void JawsHealthUpdated(Jaws jaws) {
+		GUIManager.Instance.UpdateJawsHealth(jaws.health);
+	}
 }

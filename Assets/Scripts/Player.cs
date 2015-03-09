@@ -7,6 +7,7 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	[HideInInspector]
 	public Animator animator;
+	public Gun gun;
 
 	public float xSpeed = 5f;
 	public float ySpeed = 4f;
@@ -17,6 +18,10 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Awake() {
 		animator = GetComponent<Animator> ();
+
+		if (gun == null) {
+			Debug.LogError("Unable to start Player: Gun is null.");
+		}
 	}
 
 	void Start() {
@@ -25,6 +30,10 @@ public class Player : MonoBehaviour {
 
 	void Initialize() {
 		currentState = new PlayerSwimming();
+	}
+
+	public void FireGun(bool facingRight) {
+		gun.FireGun(facingRight);
 	}
 
 	public void SetState(PlayerState newState) {
@@ -45,7 +54,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		Debug.Log ("Collided with " + collider.gameObject.name);
 		if (collider.gameObject.tag == "Enemy" && currentState != null) {
 			currentState.OnEnemyCollision(this, collider);
 		}

@@ -27,6 +27,10 @@ public class PlayerSwimming : PlayerState {
 		Vector3 movement = new Vector3 (xDir * player.xSpeed, yDir * player.ySpeed);
 		player.transform.position += movement * Time.deltaTime;
 
+		if (Input.GetButtonDown("Fire1")) {
+			player.FireGun(facingRight);
+		}
+
 		GameManager.Instance.FitInBounds(player.transform);
 	}
 
@@ -62,7 +66,7 @@ public class PlayerDying : PlayerState {
 		player.transform.position += movement * Time.deltaTime;
 
 		if (!player.GetComponent<Renderer>().isVisible) {
-			Debug.Log("TODO: Trigger GameOver screen.");
+			// TODO: Trigger GameOver screen.
 		}
 	}
 }
