@@ -26,6 +26,8 @@ public class PlayerSwimming : PlayerState {
 		
 		Vector3 movement = new Vector3 (xDir * player.xSpeed, yDir * player.ySpeed);
 		player.transform.position += movement * Time.deltaTime;
+
+		GameManager.Instance.FitInBounds(player.transform);
 	}
 
 	public override void OnEnemyCollision(Player player, Collider2D collider) {
