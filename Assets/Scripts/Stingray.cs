@@ -35,7 +35,7 @@ public class Stingray : MonoBehaviour {
 		health -= damage;
 
 		if (!IsAlive()) {
-			GameManager.Instance.PlayerScore += scoreValue;
+			GameManager.Instance.OnStingrayDies(this);
 			Destroy (gameObject);
 		}
 	}

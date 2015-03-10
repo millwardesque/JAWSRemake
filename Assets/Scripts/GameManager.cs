@@ -6,6 +6,10 @@ public class GameManager : MonoBehaviour {
 	public GameObject leftOutOfBounds;
 	public GameObject rightOutOfBounds;
 	public SpriteRenderer background;
+	public Shell shellPrefab;
+
+	float defaultChanceToSpawnShell = 0.1f;
+	float chanceToSpawnShell = 0.1f;
 
 	int playerScore = 0;
 	public int PlayerScore {
@@ -44,6 +48,10 @@ public class GameManager : MonoBehaviour {
 			if (rightOutOfBounds == null) {
 				Debug.LogError ("Unable to start Game Manager: Right Out-of-bounds is null.");
 			}
+
+			if (shellPrefab == null) {
+				Debug.LogError ("Unable to start Game Manager: Shell prefab is null.");
+			}
 		}
 		else {
 			Destroy (gameObject);
@@ -53,6 +61,7 @@ public class GameManager : MonoBehaviour {
 	void Start() {
 		InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
 		PlayerScore = 0;
+		chanceToSpawnShell = defaultChanceToSpawnShell;
 	}
 
 	public void InitLevel(string bgName, Bounds levelBounds) {
@@ -98,5 +107,22 @@ public class GameManager : MonoBehaviour {
 
 	public void PlayerWins() {
 		Application.LoadLevel ("Ending");
+	}
+
+	public void OnStingrayDies(Stingray stingray) {
+		PlayerScore += stingray.scoreValue;
+
+
+		if (Random.value < chanceToSpawnShell) {
+			SpawnShell(stingray.transform.position);
+			chanceToSpawnShell = defaultChanceToSpawnShell;
+		}
+		else {
+			chanceToSpawnShell += 0.05f;
+		}
+	}
+
+	void SpawnShell(Vector3 position) {
+		Instantiate(shellPrefab, position, Quaternion.identity);
 	}
 }
