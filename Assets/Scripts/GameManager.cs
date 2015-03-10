@@ -29,7 +29,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	Player player;
+	[HideInInspector]
+	public Player player;
 
 	public static GameManager Instance;
 
@@ -66,22 +67,27 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
-		InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
 		PlayerScore = 0;
-
+		InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
 	}
 
 	public void InitLevel(string bgName, Bounds levelBounds) {
-		// @TODO Show level intro.
+		StartCoroutine(IntroLevel (bgName, levelBounds));
+	}
 
+	IEnumerator IntroLevel(string bgName, Bounds levelBounds) {
 		background.sprite = Resources.Load<Sprite>(bgName);
 		bounds = levelBounds;
-
+		
 		chanceToSpawnShell = defaultChanceToSpawnShell;
 		StingrayManager.Instance.KillAllStingrays();
+		StingrayManager.Instance.maxRays = 0;
 		player.Initialize();
 
-		Debug.Log (string.Format ("Level bounds: ({0},{1}), ({2},{3})", bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.x + bounds.extents.x, bounds.center.y + bounds.extents.y));
+		GUIManager.Instance.ShowLevelStartPanel();
+		yield return new WaitForSeconds(3);
+		GUIManager.Instance.HideLevelStartPanel();
+		StingrayManager.Instance.maxRays = 1;
 	}
 
 	public void FitInBounds(Transform pos, bool ignoreX = false) {

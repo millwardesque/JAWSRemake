@@ -88,7 +88,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: .800000012, y: .600000024}
+  m_Size: {x: .699999988, y: .5}
 --- !u!95 &9549240
 Animator:
   serializedVersion: 3
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   gun: {fileID: 11498894}
+  lives: 3
   xSpeed: 5
   ySpeed: 4
 --- !u!114 &11498894
@@ -133,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 11412226, guid: 138b9a288c0444739acfa87dd5a4ea6a, type: 2}
+  maxBullets: 3
 --- !u!212 &21209716
 SpriteRenderer:
   m_ObjectHideFlags: 1
