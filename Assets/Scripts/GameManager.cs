@@ -105,6 +105,10 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void PlayerLoses() {
+		GUIManager.Instance.ShowGameOverPanel();
+	}
+
 	public void PlayerWins() {
 		Application.LoadLevel ("Ending");
 	}

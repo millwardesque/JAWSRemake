@@ -6,6 +6,7 @@ public class GUIManager : MonoBehaviour {
 	public Slider jawsHealthSlider;
 	public Text scoreText;
 	public Text shellText;
+	public GameObject gameOverPanel;
 	public static GUIManager Instance;
 
 	void Awake() {
@@ -23,6 +24,10 @@ public class GUIManager : MonoBehaviour {
 			if (shellText == null) {
 				Debug.LogError("Unable to start GUI Manager: No Shell text is set.");
 			}
+
+			if (shellText == null) {
+				Debug.LogError("Unable to start GUI Manager: No game-over panel is set.");
+			}
 		}
 		else {
 			Destroy (gameObject);
@@ -39,5 +44,13 @@ public class GUIManager : MonoBehaviour {
 
 	public void UpdateShells(int shells) {
 		shellText.text = shells.ToString();
+	}
+
+	public void ShowGameOverPanel() {
+		gameOverPanel.SetActive(true);
+	}
+
+	public void HideGameOverPanel() {
+		gameOverPanel.SetActive(false);
 	}
 }

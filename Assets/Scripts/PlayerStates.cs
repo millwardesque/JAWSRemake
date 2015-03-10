@@ -66,7 +66,15 @@ public class PlayerDying : PlayerState {
 		player.transform.position += movement * Time.deltaTime;
 
 		if (!player.GetComponent<Renderer>().isVisible) {
-			// TODO: Trigger GameOver screen.
+			player.SetState(new PlayerDead());
 		}
 	}
+}
+
+public class PlayerDead : PlayerState {
+	public override void OnEnter(Player player) {
+		GameManager.Instance.PlayerLoses();
+	}
+
+	public override void OnUpdate(Player player) { }
 }
