@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 	public Animator animator;
 	public Gun gun;
 
+	public int lives = 3;
 	public float xSpeed = 5f;
 	public float ySpeed = 4f;
 
@@ -28,8 +29,10 @@ public class Player : MonoBehaviour {
 		Initialize();
 	}
 
-	void Initialize() {
-		currentState = new PlayerSwimming();
+	public void Initialize() {
+		SetState(new PlayerSwimming());
+		health = 1;
+		transform.position = Vector3.zero;
 	}
 
 	public void FireGun(bool facingRight) {
@@ -69,5 +72,10 @@ public class Player : MonoBehaviour {
 
 	public bool IsAlive() {
 		return health > 0;
+	}
+
+	public void LoseLife() {
+		lives--;
+		GameManager.Instance.OnPlayerLostLife();
 	}
 }

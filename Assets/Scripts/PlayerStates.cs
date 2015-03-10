@@ -10,11 +10,16 @@ public abstract class PlayerState {
 public class PlayerSwimming : PlayerState {
 	bool facingRight = true;
 
+	public override void OnEnter(Player player) {
+		facingRight = true;
+		player.animator.SetTrigger ("Swim Right");
+	}
+
 	// Update is called once per frame
 	public override void OnUpdate (Player player) {
 		float xDir = Input.GetAxis ("Horizontal");
 		float yDir = Input.GetAxis ("Vertical");
-		float deadzone = 0.0001f;
+		float deadzone = 0.00001f;
 		
 		if (xDir > deadzone && facingRight != true) {
 			player.animator.SetTrigger ("Swim Right");
@@ -73,7 +78,7 @@ public class PlayerDying : PlayerState {
 
 public class PlayerDead : PlayerState {
 	public override void OnEnter(Player player) {
-		GameManager.Instance.PlayerLoses();
+		player.LoseLife();
 	}
 
 	public override void OnUpdate(Player player) { }

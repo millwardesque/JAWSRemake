@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	public SpriteRenderer background;
 	public Shell shellPrefab;
 
-	float defaultChanceToSpawnShell = 0.1f;
+	float defaultChanceToSpawnShell = 0.8f;
 	float chanceToSpawnShell = 0.1f;
 
 	int playerScore = 0;
@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
 			GUIManager.Instance.UpdateShells(playerShells);
 		}
 	}
+
+	Player player;
 
 	public static GameManager Instance;
 
@@ -52,6 +54,11 @@ public class GameManager : MonoBehaviour {
 			if (shellPrefab == null) {
 				Debug.LogError ("Unable to start Game Manager: Shell prefab is null.");
 			}
+
+			player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+			if (player == null) {
+				Debug.LogError ("Unable to start Game Manager: Couldn't find an object with the player tag.");
+			}
 		}
 		else {
 			Destroy (gameObject);
@@ -61,12 +68,18 @@ public class GameManager : MonoBehaviour {
 	void Start() {
 		InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
 		PlayerScore = 0;
-		chanceToSpawnShell = defaultChanceToSpawnShell;
+
 	}
 
 	public void InitLevel(string bgName, Bounds levelBounds) {
+		// @TODO Show level intro.
+
 		background.sprite = Resources.Load<Sprite>(bgName);
 		bounds = levelBounds;
+
+		chanceToSpawnShell = defaultChanceToSpawnShell;
+		StingrayManager.Instance.KillAllStingrays();
+		player.Initialize();
 
 		Debug.Log (string.Format ("Level bounds: ({0},{1}), ({2},{3})", bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y, bounds.center.x + bounds.extents.x, bounds.center.y + bounds.extents.y));
 	}
@@ -105,8 +118,14 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void PlayerLoses() {
-		GUIManager.Instance.ShowGameOverPanel();
+	public void OnPlayerLostLife() {
+		if (player.lives > 0) {
+			PlayerShells = (PlayerShells > 1 ? PlayerShells / 2 : PlayerShells);
+			InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
+		}
+		else {
+			GUIManager.Instance.ShowGameOverPanel();
+		}
 	}
 
 	public void PlayerWins() {
@@ -115,7 +134,6 @@ public class GameManager : MonoBehaviour {
 
 	public void OnStingrayDies(Stingray stingray) {
 		PlayerScore += stingray.scoreValue;
-
 
 		if (Random.value < chanceToSpawnShell) {
 			SpawnShell(stingray.transform.position);

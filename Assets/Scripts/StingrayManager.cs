@@ -7,16 +7,25 @@ public class StingrayManager : MonoBehaviour {
 	public int maxRays = 1;
 	public float spawnDelay = 1f;
 
+	public static StingrayManager Instance;
+
 	float currentDelay = 0f;
 	List<Stingray> activeStingrays;
 
 	void Awake() {
-		if (null == stingrayPrefab) {
-			Debug.LogError ("Unable to start Stingray Manager: No stingray prefab is set.");
-		}
+		if (null == Instance) {
+			Instance = this;
 
-		activeStingrays = new List<Stingray>();
-		currentDelay = spawnDelay;
+			if (null == stingrayPrefab) {
+				Debug.LogError ("Unable to start Stingray Manager: No stingray prefab is set.");
+			}
+
+			activeStingrays = new List<Stingray>();
+			currentDelay = spawnDelay;
+		}
+		else {
+			Destroy (gameObject);
+		}
 	}
 
 	void Update() {
@@ -29,6 +38,19 @@ public class StingrayManager : MonoBehaviour {
 				SpawnStingray();
 			}
 		}
+	}
+
+	public void KillAllStingrays() {
+		List<Stingray> deadlist = new List<Stingray>();
+		foreach (Stingray stingray in activeStingrays) {
+			deadlist.Add(stingray);
+		}
+		
+		foreach (Stingray stingray in deadlist) {
+			Destroy(stingray.gameObject);
+			activeStingrays.Remove(stingray);
+		}
+		activeStingrays.Clear ();
 	}
 
 	void CleanupDeadStingrays() {
