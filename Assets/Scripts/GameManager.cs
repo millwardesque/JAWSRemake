@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 	public Bounds bounds;
+	public GameObject leftOutOfBounds;
+	public GameObject rightOutOfBounds;
 	public SpriteRenderer background;
 
 	public static GameManager Instance;
@@ -15,6 +17,14 @@ public class GameManager : MonoBehaviour {
 
 			if (background == null) {
 				Debug.LogError("Unable to start Game Manager: Background is null.");
+			}
+
+			if (leftOutOfBounds == null) {
+				Debug.LogError ("Unable to start Game Manager: Left Out-of-bounds is null.");
+			}
+
+			if (rightOutOfBounds == null) {
+				Debug.LogError ("Unable to start Game Manager: Right Out-of-bounds is null.");
 			}
 		}
 		else {
