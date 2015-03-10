@@ -7,6 +7,15 @@ public class GameManager : MonoBehaviour {
 	public GameObject rightOutOfBounds;
 	public SpriteRenderer background;
 
+	int playerScore = 0;
+	public int PlayerScore {
+		get { return playerScore; }
+		set {
+			playerScore = value;
+			GUIManager.Instance.UpdateScore(playerScore);
+		}
+	}
+
 	public static GameManager Instance;
 
 	// Use this for initialization
@@ -34,6 +43,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
+		PlayerScore = 0;
 	}
 
 	public void InitLevel(string bgName, Bounds levelBounds) {

@@ -5,15 +5,11 @@ using System.Collections;
 [RequireComponent (typeof (BoxCollider2D))]
 public class Stingray : MonoBehaviour {
 	public int health = 3;
-	public float speed = 3.0f;
-	public float delayAfterHit = 0.2f;
+	public float speed = 2.5f;
+	public float delayAfterHit = 0.05f;
+	public int scoreValue = 10;
 	float currentHitDelay = 0f;
-
-	// Use this for initialization
-	void Start () {
 	
-	}
-
 	void Update() {
 		if (IsAlive ()) {
 			if (currentHitDelay <= float.Epsilon) {
@@ -39,6 +35,7 @@ public class Stingray : MonoBehaviour {
 		health -= damage;
 
 		if (!IsAlive()) {
+			GameManager.Instance.PlayerScore += scoreValue;
 			Destroy (gameObject);
 		}
 	}

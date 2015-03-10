@@ -1663,6 +1663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jawsHealthSlider: {fileID: 724561928}
+  scoreText: {fileID: 1055162823}
 --- !u!1 &1618104481
 GameObject:
   m_ObjectHideFlags: 0
