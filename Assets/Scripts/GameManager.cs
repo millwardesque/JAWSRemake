@@ -16,6 +16,15 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	int playerShells = 0;
+	public int PlayerShells {
+		get { return playerShells; }
+		set {
+			playerShells = value;
+			GUIManager.Instance.UpdateShells(playerShells);
+		}
+	}
+
 	public static GameManager Instance;
 
 	// Use this for initialization

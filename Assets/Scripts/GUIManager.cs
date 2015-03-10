@@ -5,6 +5,7 @@ using System.Collections;
 public class GUIManager : MonoBehaviour {
 	public Slider jawsHealthSlider;
 	public Text scoreText;
+	public Text shellText;
 	public static GUIManager Instance;
 
 	void Awake() {
@@ -18,6 +19,10 @@ public class GUIManager : MonoBehaviour {
 			if (scoreText == null) {
 				Debug.LogError("Unable to start GUI Manager: No Score text is set.");
 			}
+
+			if (shellText == null) {
+				Debug.LogError("Unable to start GUI Manager: No Shell text is set.");
+			}
 		}
 		else {
 			Destroy (gameObject);
@@ -30,5 +35,9 @@ public class GUIManager : MonoBehaviour {
 
 	public void UpdateScore(int score) {
 		scoreText.text = score.ToString();
+	}
+
+	public void UpdateShells(int shells) {
+		shellText.text = shells.ToString();
 	}
 }
