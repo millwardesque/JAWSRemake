@@ -72,6 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   speed: 3
+  delayAfterHit: .200000003
 --- !u!212 &21213912
 SpriteRenderer:
   m_ObjectHideFlags: 1
