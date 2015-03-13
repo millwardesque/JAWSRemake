@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour {
 		player.Initialize();
 
 		GUIManager.Instance.ShowLevelStartPanel();
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(0);
 		GUIManager.Instance.HideLevelStartPanel();
 		StingrayManager.Instance.maxRays = 1;
 	}
@@ -138,11 +138,11 @@ public class GameManager : MonoBehaviour {
 		Application.LoadLevel ("Ending");
 	}
 
-	public void OnStingrayDies(Stingray stingray) {
-		PlayerScore += stingray.scoreValue;
-
+	public void OnEnemyDies(Enemy enemy) {
+		PlayerScore += enemy.scoreValue;
+		
 		if (Random.value < chanceToSpawnShell) {
-			SpawnShell(stingray.transform.position);
+			SpawnShell(enemy.transform.position);
 			chanceToSpawnShell = defaultChanceToSpawnShell;
 		}
 		else {
