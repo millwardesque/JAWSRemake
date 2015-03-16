@@ -2,45 +2,44 @@
 using System.Collections;
 
 [RequireComponent (typeof (Animator))]
-[RequireComponent (typeof (Rigidbody2D))]
-[RequireComponent (typeof (BoxCollider2D))]
-public class Jaws : MonoBehaviour {
+public class Jaws : Enemy {
 	public Player target;
 
 	Animator animator;
-	public float xSpeed = 4.0f;
-	public float ySpeed = 3.0f;
-	public int health = 60;
-
 	float xDir = 1.0f;
 	bool facingRight = true;
 
 	// Use this for initialization
 	void Awake() {
 		animator = GetComponent<Animator> ();
-
-		if (target == null) {
-			Debug.LogError("Unable to start Jaws: Target isn't set.");
-		}
 	}
 
 	void Start() {
 		GameManager.Instance.JawsHealthUpdated(this);
+		
+		if (target == null) {
+			Debug.LogError("Unable to start Jaws: Target isn't set.");
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (target.IsAlive()) {
-			float yDir = (target.transform.position.y - transform.position.y) > float.Epsilon ? 1f : -1f;
-			
-			Vector3 movement = new Vector3 (xDir * xSpeed, yDir * ySpeed);
-			transform.position += movement * Time.deltaTime;
+		if (IsAlive() && target.IsAlive()) {
+			if (currentHitDelay <= float.Epsilon) {
+				float yDir = (target.transform.position.y - transform.position.y) > float.Epsilon ? 1f : -1f;
+				
+				Vector3 movement = new Vector3 (xDir * speed.x, yDir * speed.y);
+				transform.position += movement * Time.deltaTime;
 
-			GameManager.Instance.FitInBounds(transform, true);
+				GameManager.Instance.FitInBounds(transform, true);
+			}
+			else {
+				currentHitDelay -= Time.deltaTime;
+			}
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D col) {
+	protected override void OnTriggerEnter2D(Collider2D col) {	
 		// Change direction if the shark hits the out-of-bounds triggers.
 		if (col.tag == "Out-of-bounds") {
 			if (facingRight) {
@@ -55,17 +54,12 @@ public class Jaws : MonoBehaviour {
 			}
 		}
 
-		if (col.tag == "Bullet") {
-			AddDamage(col.GetComponent<Bullet>().damage);
-		}
+		base.OnTriggerEnter2D(col);
 	}
 
-	public void AddDamage(int damage) {
-		health -= damage;
+	protected override void OnDamaged ()
+	{
+		base.OnDamaged();
 		GameManager.Instance.JawsHealthUpdated(this);
-	}
-
-	public bool IsAlive() {
-		return health > 0;
 	}
 }

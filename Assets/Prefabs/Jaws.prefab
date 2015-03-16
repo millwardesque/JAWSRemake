@@ -88,9 +88,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fa98d2a0b3f84b48abb805c56b14ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 124
+  speed: {x: 3, y: 2, z: 0}
+  scoreValue: 100
+  delayAfterHit: .0500000007
   target: {fileID: 0}
-  xSpeed: 2
-  ySpeed: 1
 --- !u!212 &21286426
 SpriteRenderer:
   m_ObjectHideFlags: 1

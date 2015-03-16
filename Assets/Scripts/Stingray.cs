@@ -7,7 +7,7 @@ public class Stingray : Enemy {
 	void Update() {
 		if (IsAlive ()) {
 			if (currentHitDelay <= float.Epsilon) {
-				transform.position += new Vector3 (speed * Time.deltaTime, 0f);
+				transform.position += speed * Time.deltaTime;
 			}
 			else {
 				currentHitDelay -= Time.deltaTime;

@@ -5,7 +5,7 @@ using System.Collections;
 [RequireComponent (typeof (BoxCollider2D))]
 public class Enemy : MonoBehaviour {
 	public int health = 1;
-	public float speed = 1f;
+	public Vector3 speed = new Vector3(1f, 1f, 0f);
 	public int scoreValue = 10;
 	public float delayAfterHit = 0.05f;
 	protected float currentHitDelay = 0f;
@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour {
 
 	public void AddDamage(int damage) {
 		health -= damage;
+		OnDamaged ();
 		
 		if (!IsAlive()) {
 			GameManager.Instance.OnEnemyDies(this);
@@ -27,6 +28,8 @@ public class Enemy : MonoBehaviour {
 			currentHitDelay = delayAfterHit;
 		}
 	}
+
+	protected virtual void OnDamaged() { }
 	
 	public bool IsAlive() {
 		return health > 0;

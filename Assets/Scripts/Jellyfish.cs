@@ -9,7 +9,7 @@ public class Jellyfish : Enemy {
 			if (GameManager.Instance.bounds.max.y < transform.position.y) {
 				Destroy (gameObject);
 			}
-			transform.position += new Vector3 (0f, speed * Time.deltaTime);
+			transform.position += speed * Time.deltaTime;
 		}
 	}
 }

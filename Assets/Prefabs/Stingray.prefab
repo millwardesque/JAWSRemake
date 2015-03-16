@@ -70,10 +70,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f00639c0705423abf4edf4e1bd795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
-  speed: 2.5
-  delayAfterHit: .0500000007
+  health: 2
+  speed: {x: 2, y: 0, z: 0}
   scoreValue: 10
+  delayAfterHit: .0500000007
 --- !u!212 &21213912
 SpriteRenderer:
   m_ObjectHideFlags: 1
