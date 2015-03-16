@@ -80,14 +80,14 @@ public class GameManager : MonoBehaviour {
 		bounds = levelBounds;
 		
 		chanceToSpawnShell = defaultChanceToSpawnShell;
-		StingrayManager.Instance.KillAllStingrays();
-		StingrayManager.Instance.maxRays = 0;
+		StingrayManager.Instance.KillAllEnemies();
+		StingrayManager.Instance.maxEnemies = 0;
 		player.Initialize();
 
 		GUIManager.Instance.ShowLevelStartPanel();
 		yield return new WaitForSeconds(0);
 		GUIManager.Instance.HideLevelStartPanel();
-		StingrayManager.Instance.maxRays = 1;
+		StingrayManager.Instance.maxEnemies = 1;
 	}
 
 	public void FitInBounds(Transform pos, bool ignoreX = false) {
