@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using GameExtensionMethods;
 
 public class GameManager : MonoBehaviour {
-	public Bounds bounds;
 	public GameObject leftOutOfBounds;
 	public GameObject rightOutOfBounds;
 	public SpriteRenderer background;
 	public Shell shellPrefab;
 
+	UnderwaterLevel currentLevel;
+	public UnderwaterLevel CurrentLevel {
+		get { return currentLevel; }
+	}
+
+	List<UnderwaterLevel> underwaterLevels = new List<UnderwaterLevel>();
 	float defaultChanceToSpawnShell = 0.8f;
 	float chanceToSpawnShell = 0.1f;
 
@@ -60,6 +67,18 @@ public class GameManager : MonoBehaviour {
 			if (player == null) {
 				Debug.LogError ("Unable to start Game Manager: Couldn't find an object with the player tag.");
 			}
+
+			// Load the underwater level data.
+			underwaterLevels.Add(new UnderwaterLevel(
+				"shallow", 
+				"jaws-shallow", 
+				new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f))
+			));
+			underwaterLevels.Add(new UnderwaterLevel(
+				"deep",
+				"jaws-deep",
+				new Bounds(new Vector3(0f, -6.65f), new Vector3(10f, 14.66f))
+			));
 		}
 		else {
 			Destroy (gameObject);
@@ -68,17 +87,37 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		PlayerScore = 0;
-		InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
+		InitLevel ("deep");
 	}
 
-	public void InitLevel(string bgName, Bounds levelBounds) {
-		StartCoroutine(IntroLevel (bgName, levelBounds));
+	public void PickRandomLevel() {
+		int levelIndex = Random.Range(0, underwaterLevels.Count);
+		InitLevel (underwaterLevels[levelIndex]);
 	}
 
-	IEnumerator IntroLevel(string bgName, Bounds levelBounds) {
-		background.sprite = Resources.Load<Sprite>(bgName);
-		bounds = levelBounds;
-		
+	public void InitLevel(string levelName) {
+		UnderwaterLevel level = underwaterLevels.Find (x => x.levelName == levelName);
+		if (level != null) {
+			InitLevel (level);
+		}
+		else {
+			Debug.LogError("Unable to init level '" + levelName + "': No level with that name was found.");
+		}
+	}
+
+	public void InitLevel(UnderwaterLevel level) {
+		if (level != null) {
+			currentLevel = level;
+			StartCoroutine(IntroLevel (level));
+		}
+		else {
+			Debug.LogError("Unable to init level: Level is null.");
+		}
+	}
+
+	IEnumerator IntroLevel(UnderwaterLevel level) {
+		background.sprite = Resources.Load<Sprite>(level.backgroundImageName);
+
 		chanceToSpawnShell = defaultChanceToSpawnShell;
 		StingrayManager.Instance.KillAllEnemies();
 		StingrayManager.Instance.maxEnemies = 0;
@@ -89,33 +128,7 @@ public class GameManager : MonoBehaviour {
 		GUIManager.Instance.HideLevelStartPanel();
 		StingrayManager.Instance.maxEnemies = 1;
 	}
-
-	public void FitInBounds(Transform pos, bool ignoreX = false) {
-		Vector3 newPosition = pos.position;
-
-		if (!ignoreX) {
-			if (pos.position.x < (bounds.center.x - bounds.extents.x)) {
-				newPosition.x = (bounds.center.x - bounds.extents.x);
-			}
-			else if (pos.position.x > (bounds.center.x + bounds.extents.x)) {
-				newPosition.x = (bounds.center.x + bounds.extents.x);
-			}
-		}
-
-		if (pos.position.y < (bounds.center.y - bounds.extents.y)) {
-			newPosition.y = (bounds.center.y - bounds.extents.y);
-		}
-		else if (pos.position.y > (bounds.center.y + bounds.extents.y)) {
-			newPosition.y = (bounds.center.y + bounds.extents.y);
-		}
-
-		pos.position = newPosition;
-	}
-
-	public bool IsInBounds(Vector3 point) {
-		return bounds.Contains(point);
-	}
-
+	
 	public void JawsHealthUpdated(Jaws jaws) {
 		GUIManager.Instance.UpdateJawsHealth(jaws.health);
 
@@ -127,7 +140,7 @@ public class GameManager : MonoBehaviour {
 	public void OnPlayerLostLife() {
 		if (player.lives > 0) {
 			PlayerShells = (PlayerShells > 1 ? PlayerShells / 2 : PlayerShells);
-			InitLevel ("jaws-shallow", new Bounds(new Vector3(0f, -1.055f), new Vector3(10f, 3.55f)));
+			PickRandomLevel();
 		}
 		else {
 			GUIManager.Instance.ShowGameOverPanel();

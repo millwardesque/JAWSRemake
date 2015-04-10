@@ -20,12 +20,12 @@ public class Shell : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (!GameManager.Instance.IsInBounds(transform.position)) {
+		if (!GameManager.Instance.CurrentLevel.IsInPlayBounds(transform.position)) {
 			return;
 		}
 
 		transform.position -= new Vector3(0f, descentSpeed * Time.deltaTime);
-		GameManager.Instance.FitInBounds(transform);
+		GameManager.Instance.CurrentLevel.FitInPlayBounds(transform);
 		lifetime -= Time.deltaTime;
 		if (lifetime < fadeTime) {
 			Color currentColor = spriteRenderer.color;

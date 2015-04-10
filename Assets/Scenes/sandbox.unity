@@ -729,8 +729,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 462731695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11, y: .939999998, z: .100000001}
-  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_LocalPosition: {x: -11, y: -5, z: .100000001}
+  m_LocalScale: {x: 1, y: 20, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -1076,6 +1076,7 @@ GameObject:
   - 92: {fileID: 849418372}
   - 124: {fileID: 849418371}
   - 81: {fileID: 849418370}
+  - 114: {fileID: 849418375}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1148,6 +1149,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &849418375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849418369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2fac32cf08c4acdac13ba823033971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followHeight: 3.5
+  uiHeight: 2.0999999
 --- !u!1 &853413016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,8 +1500,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1140099379}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11, y: .939999998, z: .100000001}
-  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_LocalPosition: {x: 11, y: -5, z: .100000001}
+  m_LocalScale: {x: 1, y: 20, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -1777,9 +1791,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ab265bed3f54c13875a6f343bdd10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
   leftOutOfBounds: {fileID: 462731695}
   rightOutOfBounds: {fileID: 1140099379}
   background: {fileID: 854053194}
@@ -1871,6 +1882,7 @@ MonoBehaviour:
   jawsHealthSlider: {fileID: 724561928}
   scoreText: {fileID: 1055162823}
   shellText: {fileID: 295515068}
+  statusPanel: {fileID: 1288445859}
   gameOverPanel: {fileID: 1159717370}
   levelStartPanel: {fileID: 589457939}
   levelStartLives: {fileID: 1963735021}
@@ -1916,7 +1928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 11411904, guid: 257c812303bd54adfb5431a863b22855, type: 2}
   maxEnemies: 1
-  spawnDelay: 1
+  spawnDelay: 2
 --- !u!1 &1618104481
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,6 +2427,7 @@ MonoBehaviour:
   prefab: {fileID: 11453132, guid: c25b3000bac6a414595de2ec4ad63a08, type: 2}
   maxEnemies: 1
   spawnDelay: 1
+  spawnProbability: 1
 --- !u!1 &2126666191
 GameObject:
   m_ObjectHideFlags: 0

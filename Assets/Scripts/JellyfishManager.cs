@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameExtensionMethods;
 
 public class JellyfishManager : EnemySpawner<Jellyfish> {
 	static public JellyfishManager Instance;
@@ -22,8 +23,8 @@ public class JellyfishManager : EnemySpawner<Jellyfish> {
 
 		bool facingRight = (Random.Range(0, 2) == 0);
 		float yPosOffset = 0;	// Use an offset to move the enemy just slightly offscreen.
-		float yPos = gameManager.bounds.center.y - gameManager.bounds.extents.y - yPosOffset;
-		float xPos = Random.Range(gameManager.bounds.center.x - gameManager.bounds.extents.x, gameManager.bounds.center.x + gameManager.bounds.extents.x);
+		float yPos = gameManager.CurrentLevel.playBounds.GetBottom() - yPosOffset;
+		float xPos = gameManager.CurrentLevel.playBounds.GetRandomX();
 		
 		if (!facingRight) {
 			enemy.transform.localScale = new Vector3(-1f, 1f, 1f);

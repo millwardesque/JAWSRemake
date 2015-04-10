@@ -31,7 +31,7 @@ public class Jaws : Enemy {
 				Vector3 movement = new Vector3 (xDir * speed.x, yDir * speed.y);
 				transform.position += movement * Time.deltaTime;
 
-				GameManager.Instance.FitInBounds(transform, true);
+				GameManager.Instance.CurrentLevel.FitInPlayBounds(transform, true);
 			}
 			else {
 				currentHitDelay -= Time.deltaTime;

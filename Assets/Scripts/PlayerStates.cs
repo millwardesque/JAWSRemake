@@ -36,7 +36,7 @@ public class PlayerSwimming : PlayerState {
 			player.FireGun(facingRight);
 		}
 
-		GameManager.Instance.FitInBounds(player.transform);
+		GameManager.Instance.CurrentLevel.FitInPlayBounds(player.transform);
 	}
 
 	public override void OnEnemyCollision(Player player, Collider2D collider) {

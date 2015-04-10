@@ -29,7 +29,10 @@ public abstract class EnemySpawner<T> :
 			currentDelay -= Time.deltaTime;
 			if (currentDelay <= 0f) {
 				currentDelay = spawnDelay;
-				activeEnemies.Add(Spawn());
+				T newEnemy = Spawn ();
+				if (newEnemy != null) {
+					activeEnemies.Add(newEnemy);
+				}
 			}
 		}
 	}

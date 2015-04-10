@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GameExtensionMethods;
 
 public class StingrayManager : EnemySpawner<Stingray> {
 	static public StingrayManager Instance;
@@ -22,7 +23,7 @@ public class StingrayManager : EnemySpawner<Stingray> {
 		enemy.transform.SetParent(transform);
 		bool facingRight = (Random.Range(0, 2) == 0);
 		float xPosOffset = 2f;	// Use an offset to move the stingray out of it's starting out-of-bounds position, otherwise it'll get caught in the trigger and be destroyed.
-		float yPos = Random.Range(gameManager.bounds.center.y - gameManager.bounds.extents.y, gameManager.bounds.center.y + gameManager.bounds.extents.y);
+		float yPos = gameManager.CurrentLevel.playBounds.GetRandomY();
 		float xPos = gameManager.leftOutOfBounds.transform.position.x + xPosOffset;
 
 		if (!facingRight) {

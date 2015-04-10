@@ -6,6 +6,7 @@ public class GUIManager : MonoBehaviour {
 	public Slider jawsHealthSlider;
 	public Text scoreText;
 	public Text shellText;
+	public RectTransform statusPanel;
 	public GameObject gameOverPanel;
 	public GameObject levelStartPanel;
 	public Text levelStartLives;
@@ -26,6 +27,10 @@ public class GUIManager : MonoBehaviour {
 
 			if (shellText == null) {
 				Debug.LogError("Unable to start GUI Manager: No Shell text is set.");
+			}
+
+			if (statusPanel == null) {
+				Debug.LogError("Unable to start GUI Manager: No status panel is set.");
 			}
 
 			if (gameOverPanel == null) {
@@ -77,5 +82,9 @@ public class GUIManager : MonoBehaviour {
 	
 	public void HideLevelStartPanel() {
 		levelStartPanel.SetActive(false);
+	}
+
+	public RectTransform GetStatusPanel() {
+		return statusPanel;
 	}
 }

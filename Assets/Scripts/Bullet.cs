@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour {
 	void Update () {
 		transform.position += new Vector3(speed * Time.deltaTime, 0);
 
-		if (!GameManager.Instance.IsInBounds(transform.position)) {
+		if (!GameManager.Instance.CurrentLevel.IsInPlayBounds(transform.position)) {
 			Destroy (gameObject);
 		}
 	}
